@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📞 Phonebook App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #8e44ad, #3498db);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 450px;
+      color: #fff;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .buttons button {
+      flex: 1 1 45%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ffffff33;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .buttons button:hover {
+      background-color: #ffffff55;
+    }
+
+    .contact-list {
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .contact-item {
+      background: #ffffff22;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 5px 0;
+    }
+
+    @media (max-width: 600px) {
+      .buttons button {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📖 Phonebook</h1>
+    <input type="text" id="name" placeholder="Enter name">
+    <input type="tel" id="phone" placeholder="Enter phone number">
+
+    <div class="buttons">
+      <button onclick="addContact()">➕ Add Contact</button>
+      <button onclick="viewContacts()">📋 View Contacts</button>
+      <button onclick="searchContact()">🔍 Search</button>
+      <button onclick="deleteContact()">❌ Delete</button>
+     
+    </div>
+
+    <div class="contact-list" id="contactList"></div>
+  </div>
+
+  <script>
+    let contacts = [];
+
+    function addContact() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+
+      if (name && phone) {
+        contacts.push({ name, phone });
+        alert(`Contact ${name} added!`);
+        document.getElementById("name").value = '';
+        document.getElementById("phone").value = '';
+      } else {
+        alert("Please enter both name and phone number.");
+      }
+    }
+
+    function viewContacts() {
+      const list = document.getElementById("contactList");
+      list.innerHTML = '';
+      if (contacts.length === 0) {
+        list.innerHTML = '<p>No contacts found.</p>';
+      } else {
+        contacts.forEach(contact => {
+          const div = document.createElement("div");
+          div.className = "contact-item";
+          div.innerText = `👤 ${contact.name} — 📞 ${contact.phone}`;
+          list.appendChild(div);
+        });
+      }
+    }
+
+    function searchContact() {
+      const search = prompt("Enter name to search:").trim().toLowerCase();
+      const found = contacts.find(c => c.name.toLowerCase() === search);
+      if (found) {
+        alert(`Found: ${found.name} — ${found.phone}`);
+      } else {
+        alert("Contact not found.");
+      }
+    }
+
+    function deleteContact() {
+      const delName = prompt("Enter name to delete:").trim().toLowerCase();
+      const index = contacts.findIndex(c => c.name.toLowerCase() === delName);
+      if (index !== -1) {
+        const removed = contacts.splice(index, 1);
+        alert(`Deleted: ${removed[0].name}`);
+        viewContacts();
+      } else {
+        alert("Contact not found.");
+      }
+    }
+
+   
+    
+  </script>
+
+</body>
+</html>
